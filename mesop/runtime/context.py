@@ -1,4 +1,5 @@
 import copy
+import logging
 import threading
 import types
 import urllib.parse as urlparse
@@ -22,6 +23,8 @@ from mesop.utils.async_utils import run_async_generator, run_coroutine
 T = TypeVar("T")
 
 Handler = Callable[[Any], Generator[None, None, None] | None]
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(kw_only=True)
@@ -383,6 +386,6 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       else:
         yield
     else:
-      raise MesopException(
+      logger.warning(
         f"Unknown handler id: {event.handler_id} from event {event}"
       )
